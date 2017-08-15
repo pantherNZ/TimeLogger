@@ -50,8 +50,22 @@ namespace TimeLogger
             SetDesktopLocation( Screen.PrimaryScreen.WorkingArea.Width - Width, Screen.PrimaryScreen.WorkingArea.Height - Height );
 
             // Store registry key in order to run on Windows startup
-            //RegistryKey rk = Registry.CurrentUser.OpenSubKey( "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true );
-            // rk.SetValue("GGG Time Logger", Application.ExecutablePath.ToString());
+            if( Properties.Settings.Default.OutputDirectory == "%UNINITIALISED%" )
+            {
+                Properties.Settings.Default.OutputDirectory = Environment.GetFolderPath( Environment.SpecialFolder.Desktop );
+                //RegistryKey rk = Registry.CurrentUser.OpenSubKey( "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true );
+                // rk.SetValue("GGG Time Logger", Application.ExecutablePath.ToString());
+            }
+
+            // Test the excel file
+            if( !File.Exists( Properties.Settings.Default.OutputDirectory + Properties.Settings.Default.OutputExcelFile ) )
+            {
+                if( MessageBox.Show( Properties.Settings.Default.OutputExcelFile, "Output excel spreadsheet was not found, would you life to locate it?", MessageBoxButtons.YesNo ) == DialogResult.Yes )
+                {
+
+                }
+            }
+
         }
 
         // Public methods
@@ -179,7 +193,6 @@ namespace TimeLogger
         // Show settings button
         private void Settings_Button_Click( object sender, EventArgs e )
         {
-            trans
             var settingsForm = new SettingsForm();
             settingsForm.ShowDialog();
         }

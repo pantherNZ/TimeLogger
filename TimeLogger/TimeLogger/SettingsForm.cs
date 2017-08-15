@@ -17,12 +17,7 @@ namespace TimeLogger
             InitializeComponent();
         }
 
-        private void label1_Click( object sender, EventArgs e )
-        {
-
-        }
-
-        private void domainUpDown1_SelectedItemChanged( object sender, EventArgs e )
+        private void Accept_Button_Click( object sender, EventArgs e )
         {
 
         }

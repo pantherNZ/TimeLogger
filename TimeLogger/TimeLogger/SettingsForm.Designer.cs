@@ -52,13 +52,14 @@
             this.Accept_Button.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.Accept_Button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.Accept_Button.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Accept_Button.Location = new System.Drawing.Point(260, 195);
+            this.Accept_Button.Location = new System.Drawing.Point(271, 129);
             this.Accept_Button.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.Accept_Button.Name = "Accept_Button";
             this.Accept_Button.Size = new System.Drawing.Size(71, 25);
             this.Accept_Button.TabIndex = 2;
             this.Accept_Button.Text = "Accept";
             this.Accept_Button.UseVisualStyleBackColor = true;
+            this.Accept_Button.Click += new System.EventHandler(this.Accept_Button_Click);
             // 
             // Cancel_Button
             // 
@@ -67,7 +68,7 @@
             this.Cancel_Button.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.Cancel_Button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.Cancel_Button.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Cancel_Button.Location = new System.Drawing.Point(185, 195);
+            this.Cancel_Button.Location = new System.Drawing.Point(196, 129);
             this.Cancel_Button.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.Cancel_Button.Name = "Cancel_Button";
             this.Cancel_Button.Size = new System.Drawing.Size(71, 25);
@@ -78,7 +79,7 @@
             // RunOnStartup_Checkbox
             // 
             this.RunOnStartup_Checkbox.AutoSize = true;
-            this.RunOnStartup_Checkbox.Location = new System.Drawing.Point(167, 8);
+            this.RunOnStartup_Checkbox.Location = new System.Drawing.Point(186, 8);
             this.RunOnStartup_Checkbox.Name = "RunOnStartup_Checkbox";
             this.RunOnStartup_Checkbox.Size = new System.Drawing.Size(96, 17);
             this.RunOnStartup_Checkbox.TabIndex = 4;
@@ -88,7 +89,7 @@
             // ExportToTextFile_Checkbox
             // 
             this.ExportToTextFile_Checkbox.AutoSize = true;
-            this.ExportToTextFile_Checkbox.Location = new System.Drawing.Point(167, 27);
+            this.ExportToTextFile_Checkbox.Location = new System.Drawing.Point(186, 27);
             this.ExportToTextFile_Checkbox.Name = "ExportToTextFile_Checkbox";
             this.ExportToTextFile_Checkbox.Size = new System.Drawing.Size(104, 17);
             this.ExportToTextFile_Checkbox.TabIndex = 5;
@@ -127,34 +128,32 @@
             // 
             // domainUpDown1
             // 
-            this.domainUpDown1.Location = new System.Drawing.Point(167, 47);
+            this.domainUpDown1.Location = new System.Drawing.Point(186, 47);
             this.domainUpDown1.Name = "domainUpDown1";
             this.domainUpDown1.Size = new System.Drawing.Size(45, 20);
             this.domainUpDown1.TabIndex = 9;
             this.domainUpDown1.Text = "30";
-            this.domainUpDown1.SelectedItemChanged += new System.EventHandler(this.domainUpDown1_SelectedItemChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(214, 51);
+            this.label1.Location = new System.Drawing.Point(233, 51);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(110, 13);
             this.label1.TabIndex = 10;
             this.label1.Text = "Max paid break (mins)";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(10, 74);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(208, 20);
+            this.textBox1.Size = new System.Drawing.Size(216, 20);
             this.textBox1.TabIndex = 11;
             // 
             // button1
             // 
             this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button1.Location = new System.Drawing.Point(224, 73);
+            this.button1.Location = new System.Drawing.Point(232, 74);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(25, 20);
             this.button1.TabIndex = 12;
@@ -164,7 +163,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(249, 77);
+            this.label2.Location = new System.Drawing.Point(258, 77);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(82, 13);
             this.label2.TabIndex = 13;
@@ -174,13 +173,13 @@
             // 
             this.textBox2.Location = new System.Drawing.Point(10, 100);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(208, 20);
+            this.textBox2.Size = new System.Drawing.Size(216, 20);
             this.textBox2.TabIndex = 14;
             // 
             // button2
             // 
             this.button2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button2.Location = new System.Drawing.Point(224, 99);
+            this.button2.Location = new System.Drawing.Point(232, 100);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(25, 20);
             this.button2.TabIndex = 15;
@@ -190,18 +189,18 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(250, 103);
+            this.label3.Location = new System.Drawing.Point(259, 103);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(84, 13);
+            this.label3.Size = new System.Drawing.Size(83, 13);
             this.label3.TabIndex = 16;
-            this.label3.Text = "Output file name";
+            this.label3.Text = "Output excel file";
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(338, 229);
+            this.ClientSize = new System.Drawing.Size(345, 159);
             this.ControlBox = false;
             this.Controls.Add(this.label3);
             this.Controls.Add(this.button2);
