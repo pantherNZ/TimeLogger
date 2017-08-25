@@ -15,6 +15,15 @@ namespace TimeLogger
         public SettingsForm()
         {
             InitializeComponent();
+
+            SaveLocalCopy_Checkbox.Checked = Properties.Settings.Default.SaveLocalCopy;
+            AlwaysOnTop_Checkbox.Checked = Properties.Settings.Default.AlwaysOnTop;
+            RunOnStartup_Checkbox.Checked = Properties.Settings.Default.RunOnStartup;
+            OpenToMiniView_Checkbox.Checked = Properties.Settings.Default.OpenToMiniView;
+            ExportToTextFile_Checkbox.Checked = Properties.Settings.Default.ExportToTextFile;
+            OutputFile_Textbox.Text = Properties.Settings.Default.OutputExcelFile;
+            OutputDirectory_Textbox.Text = Properties.Settings.Default.OutputDirectory;
+            MaxPaidBreak.Text = Properties.Settings.Default.MaxPaidBreak.ToString();
         }
 
         private void Accept_Button_Click( object sender, EventArgs e )

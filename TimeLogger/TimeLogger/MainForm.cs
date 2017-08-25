@@ -52,7 +52,7 @@ namespace TimeLogger
             // Store registry key in order to run on Windows startup
             if( Properties.Settings.Default.OutputDirectory == "%UNINITIALISED%" )
             {
-                Properties.Settings.Default.OutputDirectory = Environment.GetFolderPath( Environment.SpecialFolder.Desktop );
+                Properties.Settings.Default.OutputDirectory = Environment.GetFolderPath( Environment.SpecialFolder.Desktop ) + "\\";
                 //RegistryKey rk = Registry.CurrentUser.OpenSubKey( "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true );
                 // rk.SetValue("GGG Time Logger", Application.ExecutablePath.ToString());
             }
@@ -60,9 +60,26 @@ namespace TimeLogger
             // Test the excel file
             if( !File.Exists( Properties.Settings.Default.OutputDirectory + Properties.Settings.Default.OutputExcelFile ) )
             {
-                if( MessageBox.Show( Properties.Settings.Default.OutputExcelFile, "Output excel spreadsheet was not found, would you life to locate it?", MessageBoxButtons.YesNo ) == DialogResult.Yes )
+                var outputText = "Output excel spreadsheet was not found at: \n" + 
+                    Properties.Settings.Default.OutputDirectory + Properties.Settings.Default.OutputExcelFile +
+                    "\n\nWould you like to locate it?";
+                if( MessageBox.Show( outputText, "File Not Found", MessageBoxButtons.YesNo ) == DialogResult.Yes )
                 {
+                    OpenFileDialog openFileDialog1 = new OpenFileDialog();
+                    openFileDialog1.InitialDirectory = Properties.Settings.Default.OutputDirectory;
+                    openFileDialog1.Filter = "Excel Files (.xls/.xlsx)|*.xls*";
+                    openFileDialog1.FilterIndex = 1;
+                    openFileDialog1.Multiselect = false;
 
+                    if( openFileDialog1.ShowDialog() == DialogResult.OK )
+                    {
+                        var fileNameStart = openFileDialog1.FileName.LastIndexOf( '\\' );
+                        Properties.Settings.Default.OutputDirectory = openFileDialog1.FileName.Substring( 0, fileNameStart ) + "\\";
+                        Properties.Settings.Default.OutputExcelFile = openFileDialog1.FileName.Substring( fileNameStart + 1 );
+                        outputText = "Output excel spreadsheet has been updated: \n" +
+                            Properties.Settings.Default.OutputDirectory + Properties.Settings.Default.OutputExcelFile;
+                        MessageBox.Show( outputText, "Updated File Location", MessageBoxButtons.OK );
+                    }
                 }
             }
 

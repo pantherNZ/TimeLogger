@@ -35,13 +35,12 @@
             this.SaveLocalCopy_Checkbox = new System.Windows.Forms.CheckBox();
             this.AlwaysOnTop_Checkbox = new System.Windows.Forms.CheckBox();
             this.OpenToMiniView_Checkbox = new System.Windows.Forms.CheckBox();
-            this.domainUpDown1 = new System.Windows.Forms.DomainUpDown();
+            this.MaxPaidBreak = new System.Windows.Forms.DomainUpDown();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.OutputDirectory_Textbox = new System.Windows.Forms.TextBox();
+            this.SelectDirectory_Button = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.OutputFile_Textbox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -126,13 +125,13 @@
             this.OpenToMiniView_Checkbox.Text = "Open to mini view";
             this.OpenToMiniView_Checkbox.UseVisualStyleBackColor = true;
             // 
-            // domainUpDown1
+            // MaxPaidBreak
             // 
-            this.domainUpDown1.Location = new System.Drawing.Point(186, 47);
-            this.domainUpDown1.Name = "domainUpDown1";
-            this.domainUpDown1.Size = new System.Drawing.Size(45, 20);
-            this.domainUpDown1.TabIndex = 9;
-            this.domainUpDown1.Text = "30";
+            this.MaxPaidBreak.Location = new System.Drawing.Point(186, 47);
+            this.MaxPaidBreak.Name = "MaxPaidBreak";
+            this.MaxPaidBreak.Size = new System.Drawing.Size(45, 20);
+            this.MaxPaidBreak.TabIndex = 9;
+            this.MaxPaidBreak.Text = "30";
             // 
             // label1
             // 
@@ -143,22 +142,22 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "Max paid break (mins)";
             // 
-            // textBox1
+            // OutputDirectory_Textbox
             // 
-            this.textBox1.Location = new System.Drawing.Point(10, 74);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(216, 20);
-            this.textBox1.TabIndex = 11;
+            this.OutputDirectory_Textbox.Location = new System.Drawing.Point(10, 74);
+            this.OutputDirectory_Textbox.Name = "OutputDirectory_Textbox";
+            this.OutputDirectory_Textbox.Size = new System.Drawing.Size(246, 20);
+            this.OutputDirectory_Textbox.TabIndex = 11;
             // 
-            // button1
+            // SelectDirectory_Button
             // 
-            this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button1.Location = new System.Drawing.Point(232, 74);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(25, 20);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "...";
-            this.button1.UseVisualStyleBackColor = true;
+            this.SelectDirectory_Button.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.SelectDirectory_Button.Location = new System.Drawing.Point(231, 100);
+            this.SelectDirectory_Button.Name = "SelectDirectory_Button";
+            this.SelectDirectory_Button.Size = new System.Drawing.Size(25, 20);
+            this.SelectDirectory_Button.TabIndex = 12;
+            this.SelectDirectory_Button.Text = "...";
+            this.SelectDirectory_Button.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -169,22 +168,12 @@
             this.label2.TabIndex = 13;
             this.label2.Text = "Output directory";
             // 
-            // textBox2
+            // OutputFile_Textbox
             // 
-            this.textBox2.Location = new System.Drawing.Point(10, 100);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(216, 20);
-            this.textBox2.TabIndex = 14;
-            // 
-            // button2
-            // 
-            this.button2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button2.Location = new System.Drawing.Point(232, 100);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(25, 20);
-            this.button2.TabIndex = 15;
-            this.button2.Text = "...";
-            this.button2.UseVisualStyleBackColor = true;
+            this.OutputFile_Textbox.Location = new System.Drawing.Point(10, 100);
+            this.OutputFile_Textbox.Name = "OutputFile_Textbox";
+            this.OutputFile_Textbox.Size = new System.Drawing.Size(216, 20);
+            this.OutputFile_Textbox.TabIndex = 14;
             // 
             // label3
             // 
@@ -200,16 +189,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(345, 159);
+            this.ClientSize = new System.Drawing.Size(341, 155);
             this.ControlBox = false;
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.OutputFile_Textbox);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.SelectDirectory_Button);
+            this.Controls.Add(this.OutputDirectory_Textbox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.domainUpDown1);
+            this.Controls.Add(this.MaxPaidBreak);
             this.Controls.Add(this.OpenToMiniView_Checkbox);
             this.Controls.Add(this.AlwaysOnTop_Checkbox);
             this.Controls.Add(this.SaveLocalCopy_Checkbox);
@@ -239,13 +227,12 @@
         private System.Windows.Forms.CheckBox SaveLocalCopy_Checkbox;
         private System.Windows.Forms.CheckBox AlwaysOnTop_Checkbox;
         private System.Windows.Forms.CheckBox OpenToMiniView_Checkbox;
-        private System.Windows.Forms.DomainUpDown domainUpDown1;
+        private System.Windows.Forms.DomainUpDown MaxPaidBreak;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox OutputDirectory_Textbox;
+        private System.Windows.Forms.Button SelectDirectory_Button;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox OutputFile_Textbox;
         private System.Windows.Forms.Label label3;
     }
 }
