@@ -16,6 +16,7 @@ namespace TimeLogger
         {
             InitializeComponent();
 
+            // Load from settings
             SaveLocalCopy_Checkbox.Checked = Properties.Settings.Default.SaveLocalCopy;
             AlwaysOnTop_Checkbox.Checked = Properties.Settings.Default.AlwaysOnTop;
             RunOnStartup_Checkbox.Checked = Properties.Settings.Default.RunOnStartup;
@@ -28,7 +29,15 @@ namespace TimeLogger
 
         private void Accept_Button_Click( object sender, EventArgs e )
         {
-
+            // Save settings
+            Properties.Settings.Default.SaveLocalCopy = SaveLocalCopy_Checkbox.Checked;
+            Properties.Settings.Default.AlwaysOnTop = AlwaysOnTop_Checkbox.Checked;
+            Properties.Settings.Default.RunOnStartup = RunOnStartup_Checkbox.Checked;
+            Properties.Settings.Default.OpenToMiniView = OpenToMiniView_Checkbox.Checked;
+            Properties.Settings.Default.ExportToTextFile = ExportToTextFile_Checkbox.Checked;
+            Properties.Settings.Default.OutputExcelFile = OutputFile_Textbox.Text;
+            Properties.Settings.Default.OutputDirectory = OutputDirectory_Textbox.Text;
+            Properties.Settings.Default.MaxPaidBreak = int.Parse( MaxPaidBreak.Text );
         }
     }
 }

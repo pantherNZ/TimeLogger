@@ -16,6 +16,7 @@ using NPOI.SS.UserModel;
 
 using System.IO;
 using System.Net.Mail;
+using Microsoft.Win32;
 
 namespace TimeLogger
 {
@@ -49,13 +50,24 @@ namespace TimeLogger
             FormClosing += FormClosingHandler;
             SetDesktopLocation( Screen.PrimaryScreen.WorkingArea.Width - Width, Screen.PrimaryScreen.WorkingArea.Height - Height );
 
-            // Store registry key in order to run on Windows startup
+            // Top most setting
+            this.TopMost = Properties.Settings.Default.AlwaysOnTop;
+            m_miniForm.TopMost = Properties.Settings.Default.AlwaysOnTop;
+
+           // Default output directory
             if( Properties.Settings.Default.OutputDirectory == "%UNINITIALISED%" )
-            {
                 Properties.Settings.Default.OutputDirectory = Environment.GetFolderPath( Environment.SpecialFolder.Desktop ) + "\\";
-                //RegistryKey rk = Registry.CurrentUser.OpenSubKey( "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true );
-                // rk.SetValue("GGG Time Logger", Application.ExecutablePath.ToString());
+
+            // Store registry key in order to run on Windows startup
+            RegistryKey rk = Registry.CurrentUser.OpenSubKey( "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true );
+            var key = "GGG Time Logger";
+
+            if( rk == null && Properties.Settings.Default.RunOnStartup )
+            {
+                rk.SetValue( key, Application.ExecutablePath.ToString() );
             }
+            else if( rk != null && !Properties.Settings.Default.RunOnStartup )
+                rk.DeleteValue( key );
 
             // Test the excel file
             if( !File.Exists( Properties.Settings.Default.OutputDirectory + Properties.Settings.Default.OutputExcelFile ) )
@@ -125,13 +137,6 @@ namespace TimeLogger
         private void FormClosingHandler( object sender, FormClosingEventArgs e )
         {
             Application.Exit();
-        }
-
-        private void MainForm_Load( object sender, EventArgs e )
-        {
-            // Try to load the timesheet excel file
-
-            // Give a warning if not found (need to change settings!)
         }
 
         private void MiniView_Button_Click( object sender, EventArgs e )
@@ -211,7 +216,13 @@ namespace TimeLogger
         private void Settings_Button_Click( object sender, EventArgs e )
         {
             var settingsForm = new SettingsForm();
-            settingsForm.ShowDialog();
+
+            if( settingsForm.ShowDialog() == DialogResult.OK )
+            {
+                // Apply settings
+                this.TopMost = Properties.Settings.Default.AlwaysOnTop;
+                m_miniForm.TopMost = Properties.Settings.Default.AlwaysOnTop;
+            }
         }
 
         // Timer

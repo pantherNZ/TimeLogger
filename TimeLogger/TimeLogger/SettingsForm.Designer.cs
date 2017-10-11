@@ -51,7 +51,7 @@
             this.Accept_Button.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.Accept_Button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.Accept_Button.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Accept_Button.Location = new System.Drawing.Point(271, 129);
+            this.Accept_Button.Location = new System.Drawing.Point(266, 127);
             this.Accept_Button.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.Accept_Button.Name = "Accept_Button";
             this.Accept_Button.Size = new System.Drawing.Size(71, 25);
@@ -67,7 +67,7 @@
             this.Cancel_Button.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.Cancel_Button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.Cancel_Button.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Cancel_Button.Location = new System.Drawing.Point(196, 129);
+            this.Cancel_Button.Location = new System.Drawing.Point(191, 127);
             this.Cancel_Button.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.Cancel_Button.Name = "Cancel_Button";
             this.Cancel_Button.Size = new System.Drawing.Size(71, 25);
@@ -189,7 +189,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(341, 155);
+            this.ClientSize = new System.Drawing.Size(344, 160);
             this.ControlBox = false;
             this.Controls.Add(this.label3);
             this.Controls.Add(this.OutputFile_Textbox);
