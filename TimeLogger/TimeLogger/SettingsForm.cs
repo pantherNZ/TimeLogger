@@ -30,6 +30,39 @@ namespace TimeLogger
         private void Accept_Button_Click( object sender, EventArgs e )
         {
             // Save settings
+            SaveSettings();
+        }
+
+        private void SelectDirectory_Button_Click( object sender, EventArgs e )
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.InitialDirectory = Properties.Settings.Default.OutputDirectory;
+            openFileDialog1.Filter = "Excel Files (.xls/.xlsx)|*.xls*";
+            openFileDialog1.FilterIndex = 1;
+            openFileDialog1.Multiselect = false;
+
+            if( openFileDialog1.ShowDialog() == DialogResult.OK )
+            {
+                var fileNameStart = openFileDialog1.FileName.LastIndexOf( '\\' );
+                OutputDirectory_Textbox.Text = openFileDialog1.FileName.Substring( 0, fileNameStart ) + "\\";
+                OutputFile_Textbox.Text = openFileDialog1.FileName.Substring( fileNameStart + 1 );
+            }
+        }
+
+        private void EmailSettings_Button_Click( object sender, EventArgs e )
+        {
+            SaveSettings();
+            var settingsForm = new EmailSettingsForm();
+            settingsForm.ShowDialog();
+        }
+
+        private void Cancel_Button_Click( object sender, EventArgs e )
+        {
+
+        }
+
+        private void SaveSettings()
+        {
             Properties.Settings.Default.SaveLocalCopy = SaveLocalCopy_Checkbox.Checked;
             Properties.Settings.Default.AlwaysOnTop = AlwaysOnTop_Checkbox.Checked;
             Properties.Settings.Default.RunOnStartup = RunOnStartup_Checkbox.Checked;
@@ -38,6 +71,7 @@ namespace TimeLogger
             Properties.Settings.Default.OutputExcelFile = OutputFile_Textbox.Text;
             Properties.Settings.Default.OutputDirectory = OutputDirectory_Textbox.Text;
             Properties.Settings.Default.MaxPaidBreak = int.Parse( MaxPaidBreak.Text );
+            Properties.Settings.Default.Save();
         }
     }
 }

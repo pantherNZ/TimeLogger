@@ -1,22 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using NPOI.HSSF.UserModel;
 using NPOI.XSSF.UserModel;
-using NPOI.HPSF;
-using NPOI.POIFS.FileSystem;
 using NPOI.SS.UserModel;
 
 using System.IO;
-using System.Net.Mail;
 using Microsoft.Win32;
+
+using Microsoft.Office.Core;
+using Outlook = Microsoft.Office.Interop.Outlook;
 
 namespace TimeLogger
 {
@@ -33,7 +26,7 @@ namespace TimeLogger
 
         // Members
         private static MiniForm m_miniForm = new MiniForm();
-        private static State m_currentState = State.ClockedOut;
+        public static State m_currentState = State.ClockedOut;
         private static DateTime m_startTime;
         private static DateTime m_endTime;
         private static DateTime m_breakStartTime;
@@ -54,7 +47,7 @@ namespace TimeLogger
             this.TopMost = Properties.Settings.Default.AlwaysOnTop;
             m_miniForm.TopMost = Properties.Settings.Default.AlwaysOnTop;
 
-           // Default output directory
+            // Default output directory
             if( Properties.Settings.Default.OutputDirectory == "%UNINITIALISED%" )
                 Properties.Settings.Default.OutputDirectory = Environment.GetFolderPath( Environment.SpecialFolder.Desktop ) + "\\";
 
@@ -67,12 +60,14 @@ namespace TimeLogger
                 rk.SetValue( key, Application.ExecutablePath.ToString() );
             }
             else if( rk != null && !Properties.Settings.Default.RunOnStartup )
+            {
                 rk.DeleteValue( key );
+            }
 
             // Test the excel file
             if( !File.Exists( Properties.Settings.Default.OutputDirectory + Properties.Settings.Default.OutputExcelFile ) )
             {
-                var outputText = "Output excel spreadsheet was not found at: \n" + 
+                var outputText = "Output excel spreadsheet was not found at: \n" +
                     Properties.Settings.Default.OutputDirectory + Properties.Settings.Default.OutputExcelFile +
                     "\n\nWould you like to locate it?";
                 if( MessageBox.Show( outputText, "File Not Found", MessageBoxButtons.YesNo ) == DialogResult.Yes )
@@ -91,10 +86,10 @@ namespace TimeLogger
                         outputText = "Output excel spreadsheet has been updated: \n" +
                             Properties.Settings.Default.OutputDirectory + Properties.Settings.Default.OutputExcelFile;
                         MessageBox.Show( outputText, "Updated File Location", MessageBoxButtons.OK );
+                        Properties.Settings.Default.Save();
                     }
                 }
             }
-
         }
 
         // Public methods
@@ -104,33 +99,14 @@ namespace TimeLogger
             Visible = !Visible;
         }
 
-        public void SendTimesheet()
+        public void CreateEmail()
         {
-           // try
-           // {
-           //     DateTime today = DateTime.Today;
-           //
-           //     // "gggpayroll@gmail.com"
-           //     MailMessage email = new MailMessage( "enkrypted1@gmail.com", "Alex.Denford@xtra.co.nz" );
-           //
-           //     email.Subject = "Alex Denford - Timesheet";
-           //     email.Body = "Hello, here is my timesheet for " + today.Date.AddDays( -11 ).ToShortDateString() +
-           //                  " to " + today.Date.AddDays( 3 ).ToShortDateString() + "\n\nThank you!\n --\nAlex Denford\n\n" +
-           //                  "*This email and timesheet were generated automatically by Alex's program, please send any issues or responses to: Alex.Denford@xtra.co.nz*";
-           //     email.Attachments.Add( new Attachment( s_strExcelPath ) );
-           //
-           //     SmtpClient MailClient = new SmtpClient( "smtp.gmail.com", 587 );
-           //     MailClient.EnableSsl = true;
-           //     MailClient.Timeout = 20000;
-           //     MailClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-           //     MailClient.UseDefaultCredentials = false;
-           //     MailClient.Credentials = new System.Net.NetworkCredential( "enkrypted1@gmail.com", "b3q6456b" );
-           //     MailClient.Send( email );
-           // }
-           // catch( Exception ex )
-           // {
-           //     MessageBox.Show( "Error with email automation: " + ex.ToString(), "Email Error", MessageBoxButtons.OK );
-           // }
+            Outlook.Application oApp = new Outlook.Application();
+            Outlook._MailItem oMailItem = ( Outlook._MailItem )oApp.CreateItem( Outlook.OlItemType.olMailItem );
+            oMailItem.To = "alex.denford@xtra.co.nz";
+            oMailItem.Subject = "Timesheet";
+            oMailItem.Body = "Hello, Here is my time sheet for: \n\nThank you!\n\n--\nAlex Denford";
+            oMailItem.Display( true );
         }
 
         // Private methods
@@ -144,7 +120,7 @@ namespace TimeLogger
             ToggleForms();
         }
 
-        private void ToggleClockState()
+        public void ToggleClockState()
         {
             if( m_currentState == State.ClockedIn )
                 ClockOut();
@@ -153,7 +129,7 @@ namespace TimeLogger
         }
 
         // Toggle break (from clocked in to break & break to clock in)
-        private void ToggleBreakState()
+        public void ToggleBreakState()
         {
             if( m_currentState == State.ClockedIn )
             {
@@ -175,6 +151,7 @@ namespace TimeLogger
         {
             m_currentState = State.ClockedIn;
             ClockToggle_Button.Text = "Clock Out";
+            m_miniForm.SetButtonText( ClockToggle_Button.Text );
             m_startTime = DateTime.Now;
             Main_Timer.Start();
         }
@@ -182,13 +159,109 @@ namespace TimeLogger
         // Handles clocking out
         private void ClockOut()
         {
-            if( MessageBox.Show( "Are you sure you want to clock out?", "Confirm Clock Out", MessageBoxButtons.YesNo ) == DialogResult.Yes )
+            if( MessageBox.Show( "Are you sure you want to clock out?", "Confirm", MessageBoxButtons.YesNo ) == DialogResult.Yes )
             {
                 m_currentState = State.ClockedOut;
                 ClockToggle_Button.Text = "Clock In";
+                m_miniForm.SetButtonText( ClockToggle_Button.Text );
                 m_endTime = DateTime.Now;
                 Main_Timer.Stop();
                 WorkTimer_Label.Text = BreakTimer_Label.Text = "00:00:00";
+
+                FillOutTimesheet();
+            }
+        }
+
+        private void FillOutTimesheet()
+        {
+            var strOutputPath = Properties.Settings.Default.OutputDirectory + Properties.Settings.Default.OutputExcelFile;
+            DateTime today = DateTime.Today;
+            var work_hours = ( m_endTime.TimeOfDay - m_startTime.TimeOfDay ).TotalHours;
+            var break_minutes = ( m_breakEndTime.TimeOfDay - m_breakStartTime.TimeOfDay ).TotalMinutes;
+
+            // Write data to text file
+            if( Properties.Settings.Default.ExportToTextFile )
+            {
+                using( System.IO.StreamWriter file = new System.IO.StreamWriter( Properties.Settings.Default.OutputDirectory + @"\GGGTimeLogger.txt", true ) )
+                {
+                    file.WriteLine( today.DayOfWeek.ToString() + " " + today.ToString( "MMMM dd" ) +
+                                    "\t\t\tStart Time: " + m_startTime.ToString( @"hh\:mm\:ss" ) +
+                                    "\t\t\tEnd Time: " + m_endTime.ToString( @"hh\:mm\:ss" ) +
+                                    "\t\t\tTotal Break: " + ( int )break_minutes + " minutes" +
+                                    "\t\t\tTotal Work: " + work_hours.ToString( "0.00" ) + " hours" );
+                }
+            }
+
+            // While loop to allow user to retry if file is open by another process
+            while( true )
+            {
+                try
+                {
+                    // Write data to excel spreadsheet
+                    XSSFWorkbook hssfwb;
+
+                    using( FileStream file = new FileStream( strOutputPath, FileMode.Open, FileAccess.Read ) )
+                    {
+                        hssfwb = new XSSFWorkbook( file );
+                        file.Close();
+                    }
+
+                    ISheet sheet = hssfwb.GetSheetAt( 0 );
+                    sheet.ForceFormulaRecalculation = true;
+
+                    // Calculate if this week is the first or second week of our two week period
+                    int iWeekNumber = ( int )( ( today.DayOfYear % 14 ) / 7 );
+
+                    // Calculate current day
+                    int iDayOfWeek = ( int )today.DayOfWeek - 1;
+                    iDayOfWeek = ( iDayOfWeek == -1 ? 6 : iDayOfWeek );
+
+                    // Set week starting date
+                    if( iWeekNumber == 0 && iDayOfWeek == 0 )
+                    {
+                        sheet.GetRow( 7 ).GetCell( 8 ).SetCellValue( today.Date.ToShortDateString() );
+                    }
+
+                    int iRow = 10 + iDayOfWeek + iWeekNumber * 8;
+
+                    // Main Start & End Times
+                    sheet.GetRow( iRow ).GetCell( 2 ).SetCellValue( m_startTime.ToString( @"hh\:mm\:ss" ) );
+                    sheet.GetRow( iRow ).GetCell( 3 ).SetCellValue( m_endTime.ToString( @"hh\:mm\:ss" ) );
+
+                    // Secondary Start & End Times
+                    //sheet.GetRow( iRow ).GetCell( 4 ).SetCellValue( EndTime.ToString( "hh:mm tt" ) ); 
+                    //sheet.GetRow( iRow ).GetCell( 5 ).SetCellValue( EndTime.ToString( "hh:mm tt" ) ); 
+
+                    // Unpaid break
+                    int iUnpaidBreak = ( int )Math.Max( 0.0, break_minutes - 30.0 );
+                    sheet.GetRow( iRow ).GetCell( 7 ).SetCellValue( iUnpaidBreak );
+
+                    //File.Delete( strOutputPath );
+
+                    // Save
+                    using( FileStream file = new FileStream( strOutputPath, FileMode.Open, FileAccess.Read ) )
+                    {
+                        hssfwb.Write( file );
+                        file.Close();
+                    }
+
+                    // If Friday, email to GGGPayroll
+                    if( iWeekNumber == 1 && iDayOfWeek == 4 )
+                        if( MessageBox.Show( "Do you want to email your time sheet now?", "Confirm", MessageBoxButtons.YesNo ) == DialogResult.Yes )
+                            CreateEmail();
+
+                    break;
+                }
+                catch( IOException )
+                {
+                    // Handle IO Exception with elegent message box
+                    string strText = "\"" + strOutputPath + "\" is already in use. Please close the file and try again";
+
+                    if( MessageBox.Show( strText, "File IO Error", MessageBoxButtons.RetryCancel ) == DialogResult.Cancel )
+                    {
+                        break;
+                    }
+                }
             }
         }
 
@@ -230,12 +303,13 @@ namespace TimeLogger
         {
             // Increment main timer
             var current_time = DateTime.Now;
-            WorkTimer_Label.Text = ( current_time - m_startTime ).ToString();
+            WorkTimer_Label.Text = ( current_time - m_startTime ).ToString( @"hh\:mm\:ss" );
 
             // Increment break timer if on break
             if( m_currentState == State.OnBreak )
             {
-                BreakTimer_Label.Text = ( current_time - m_breakStartTime ).ToString();
+                BreakTimer_Label.Text = ( current_time - m_breakStartTime ).ToString( @"hh\:mm\:ss" );
+                m_miniForm.SetButtonText( BreakTimer_Label.Text );
             }
         }
 
@@ -244,107 +318,112 @@ namespace TimeLogger
         {
             ToggleBreakState();
         }
+
+        private void ResetTimesheet_Button_Click( object sender, EventArgs e )
+        {
+            if( MessageBox.Show( "Are you sure you want to reset your time sheet?", "Confirm", MessageBoxButtons.YesNo ) == DialogResult.No )
+                return;
+
+            var strOutputPath = Properties.Settings.Default.OutputDirectory + Properties.Settings.Default.OutputExcelFile;
+            var today = DateTime.Today;
+
+            // While loop to allow user to retry if file is open by another process
+            while( true )
+            {
+                try
+                {
+                    // Write data to excel spreadsheet
+                    XSSFWorkbook hssfwb;
+
+                    using( FileStream file = new FileStream( strOutputPath, FileMode.Open, FileAccess.Read ) )
+                    {
+                        hssfwb = new XSSFWorkbook( file );
+                        file.Close();
+                    }
+
+                    hssfwb.SetForceFormulaRecalculation( true );
+                    ISheet sheet = hssfwb.GetSheetAt( 0 );
+                    sheet.ForceFormulaRecalculation = true;
+
+                    // Calculate if this week is the first or second week of our two week period
+                    int iWeekNumber = ( int )( ( today.DayOfYear % 14 ) / 7 );
+                    int iDayOfWeek = ( int )today.DayOfWeek - 1;
+                    iDayOfWeek = ( iDayOfWeek == -1 ? 6 : iDayOfWeek );
+
+                    sheet.GetRow( 7 ).GetCell( 8 ).SetCellType( CellType.String );
+
+                    for( int iRow = 10; iRow <= 24; ++iRow )
+                    {
+                        if( iRow == 17 )
+                            continue;
+
+                        // Main Start & End Times
+                        sheet.GetRow( iRow ).GetCell( 2 ).SetCellValue( "" );
+                        sheet.GetRow( iRow ).GetCell( 3 ).SetCellValue( "" );
+
+                        // Secondary Start & End Times
+                        sheet.GetRow( iRow ).GetCell( 4 ).SetCellValue( "" );
+                        sheet.GetRow( iRow ).GetCell( 5 ).SetCellValue( "" );
+
+                        // Unpaid break
+                        sheet.GetRow( iRow ).GetCell( 7 ).SetCellValue( "" );
+                        sheet.GetRow( iRow ).GetCell( 10 ).SetCellValue( "" );
+                        sheet.GetRow( iRow ).GetCell( 11 ).SetCellValue( "" );
+                    }
+
+                    File.Delete( strOutputPath );
+
+                    // Save
+                    using( FileStream file = new FileStream( strOutputPath, FileMode.CreateNew, FileAccess.Write ) )
+                    {
+                        hssfwb.Write( file );
+                        file.Close();
+                    }
+
+                    break;
+                }
+                catch( IOException )
+                {
+                    // Handle IO Exception with elegent message box
+                    string strText = "\"" + strOutputPath + "\" is already in use. Please close the file and try again";
+
+                    if( MessageBox.Show( strText, "File IO Error", MessageBoxButtons.RetryCancel ) == DialogResult.Cancel )
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void MainForm_Shown( object sender, EventArgs e )
+        {
+            // Open to mini form
+            if( Properties.Settings.Default.OpenToMiniView )
+            {
+                ToggleForms();
+            }
+
+            if( MessageBox.Show( "Would you like to clock in?", "Confirm", MessageBoxButtons.YesNo ) == DialogResult.Yes )
+            {
+                ClockIn();
+            }
+        }
+
+        private void SendTimesheet_Button_Click( object sender, EventArgs e )
+        {
+            // Calculate if this week is the first or second week of our two week period
+            DateTime today = DateTime.Today;
+            int iWeekNumber = ( int )( ( today.DayOfYear % 14 ) / 7 );
+
+            // Calculate current day
+            int iDayOfWeek = ( int )today.DayOfWeek - 1;
+            iDayOfWeek = ( iDayOfWeek == -1 ? 6 : iDayOfWeek );
+
+            if( iWeekNumber != 1 || iDayOfWeek != 4 )
+                if( MessageBox.Show( "It isn't Friday, are you sure you want to email your time sheet now?", "Confirm", MessageBoxButtons.YesNo ) == DialogResult.No )
+                    return;
+
+            CreateEmail();
+        }
     }
 }
-
-
-/*
-                        s_EndTime = DateTime.Now;
-                        s_dWorkLengthHours = ( s_EndTime.TimeOfDay - s_StartTime.TimeOfDay ).TotalHours;
-                        ClockIn_Text.Text = "Clock In";
-
-                        DateTime today = DateTime.Today;
-
-                        // Write data to text file
-                        string file_path = Environment.GetFolderPath( Environment.SpecialFolder.Desktop );
-
-                        using( System.IO.StreamWriter file = new System.IO.StreamWriter( file_path + @"\GGGTimeLogger.txt", true ) )
-                        {
-                            file.WriteLine( "Date: " + today.ToString( "MMMM dd" ) + 
-                                            "       Start Time: " + s_StartTime.ToString( "hh:mm tt" ) + 
-                                            "       End Time: " + s_EndTime.ToString( "hh:mm tt" ) +
-                                            "       Total Break: " + ( int )s_dBreakLengthMinutes + " minutes" +
-                                            "       Total Work: " + s_dWorkLengthHours.ToString( "0.00" ) + " hours" );
-                        }
-
-                        // While loop to allow user to retry if file is open by another process
-                        while( true )
-                        {
-                            try
-                            {
-                                // Write data to excel spreadsheet
-                                s_strExcelPath = file_path + @"\Timesheet v2.5.xlsx";
-                                XSSFWorkbook hssfwb;
-
-                                using( FileStream file = new FileStream(s_strExcelPath , FileMode.Open, FileAccess.Read ) )
-                                {
-                                    // hssfwb = new HSSFWorkbook( file );
-                                    hssfwb = new XSSFWorkbook( file );
-                                    file.Close();
-                                }
-
-                                ISheet sheet = hssfwb.GetSheetAt( 0 );
-                                sheet.ForceFormulaRecalculation = true;
-                                
-                                // Calculate if this week is the first or second week of our two week period
-                                DateTime base_first_monday = new DateTime( 2016, 1, 18 );
-                                int iWeekNumber = ( ( today.DayOfYear - base_first_monday.DayOfYear ) % 14 <= 6 ? 0 : 1 );
-
-                                // Calculate current day
-                                int iDayOfWeek = ( int )today.DayOfWeek - 1;
-                                iDayOfWeek = ( iDayOfWeek == -1 ? 6 : iDayOfWeek );
-
-                                // Set week starting date
-                                if( iWeekNumber == 0 && iDayOfWeek == 0)
-                                {
-                                    sheet.GetRow( 7 ).GetCell( 8 ).SetCellValue( today.Date.ToShortDateString() ); 
-                                }
-
-                                int iRow = 10 + iDayOfWeek + iWeekNumber * 8;
-
-                                // Main Start & End Times
-                                sheet.GetRow( iRow ).GetCell( 2 ).SetCellValue( s_StartTime.ToString( "hh:mm tt" ) ); 
-                                sheet.GetRow( iRow ).GetCell( 3 ).SetCellValue( s_EndTime.ToString( "hh:mm tt" ) );
-
-                                // Secondary Start & End Times
-                                //sheet.GetRow( iRow ).GetCell( 4 ).SetCellValue( EndTime.ToString( "hh:mm tt" ) ); 
-                                //sheet.GetRow( iRow ).GetCell( 5 ).SetCellValue( EndTime.ToString( "hh:mm tt" ) ); 
-
-                                // Unpaid break
-                                int iUnpaidBreak = ( int )Math.Max( 0.0, s_dBreakLengthMinutes - 30.0 );
-                                sheet.GetRow( iRow ).GetCell( 7 ).SetCellValue( iUnpaidBreak );
-
-                                File.Delete( s_strExcelPath );
-
-                                // Save
-                                using( FileStream file = new FileStream( s_strExcelPath, FileMode.CreateNew, FileAccess.Write ) )
-                                {
-                                    hssfwb.Write( file );
-                                    file.Close();
-                                }
-
-                                // If Friday, email to GGGPayroll
-                               // if( iWeekNumber == 1 && iDayOfWeek == 4 )
-                                if(true)
-                                {
-                                    ClockIn_Text.Text = "Sending Email";
-                                    //ClockIn_Text.Font = new Font( "Perpetua", 22, FontStyle.Regular );
-                                    s_CurrentState = StateType.SendingEmail;
-
-                                    Event_Timer.Enabled = true;
-                                    Event_Timer.Start();
-                                }
-
-                                break;
-                            }
-                            catch( IOException )
-                            {
-                                // Handle IO Exception with elegent message box
-                                string strText = "\"Timesheet v2.5.xlsx\" is already in use. Please close the file and try again";
-
-                                if( MessageBox.Show( strText, "File IO Error", MessageBoxButtons.RetryCancel ) == DialogResult.Cancel )
-                                {
-                                    break;
-                                }
-                            }
-*/

@@ -40,6 +40,7 @@
             this.BreakTimer_Label = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.Main_Timer = new System.Windows.Forms.Timer(this.components);
+            this.ResetTimesheet_Button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Break_Button
@@ -57,7 +58,7 @@
             // 
             // Settings_Button
             // 
-            this.Settings_Button.Location = new System.Drawing.Point(12, 42);
+            this.Settings_Button.Location = new System.Drawing.Point(12, 65);
             this.Settings_Button.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.Settings_Button.Name = "Settings_Button";
             this.Settings_Button.Size = new System.Drawing.Size(121, 25);
@@ -68,7 +69,7 @@
             // 
             // MiniView_Button
             // 
-            this.MiniView_Button.Location = new System.Drawing.Point(12, 75);
+            this.MiniView_Button.Location = new System.Drawing.Point(12, 37);
             this.MiniView_Button.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.MiniView_Button.Name = "MiniView_Button";
             this.MiniView_Button.Size = new System.Drawing.Size(121, 25);
@@ -79,13 +80,14 @@
             // 
             // SendTimesheet_Button
             // 
-            this.SendTimesheet_Button.Location = new System.Drawing.Point(12, 108);
+            this.SendTimesheet_Button.Location = new System.Drawing.Point(11, 93);
             this.SendTimesheet_Button.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.SendTimesheet_Button.Name = "SendTimesheet_Button";
             this.SendTimesheet_Button.Size = new System.Drawing.Size(121, 25);
             this.SendTimesheet_Button.TabIndex = 4;
-            this.SendTimesheet_Button.Text = "Send Timesheet";
+            this.SendTimesheet_Button.Text = "Create Email";
             this.SendTimesheet_Button.UseVisualStyleBackColor = true;
+            this.SendTimesheet_Button.Click += new System.EventHandler(this.SendTimesheet_Button_Click);
             // 
             // ClockToggle_Button
             // 
@@ -111,7 +113,7 @@
             this.label1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.label1.Font = new System.Drawing.Font("Perpetua", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(154, 61);
+            this.label1.Location = new System.Drawing.Point(154, 64);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(71, 28);
             this.label1.TabIndex = 5;
@@ -123,7 +125,7 @@
             this.WorkTimer_Label.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.WorkTimer_Label.Font = new System.Drawing.Font("Perpetua", 22F);
             this.WorkTimer_Label.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.WorkTimer_Label.Location = new System.Drawing.Point(233, 61);
+            this.WorkTimer_Label.Location = new System.Drawing.Point(233, 64);
             this.WorkTimer_Label.Name = "WorkTimer_Label";
             this.WorkTimer_Label.Size = new System.Drawing.Size(119, 34);
             this.WorkTimer_Label.TabIndex = 6;
@@ -136,7 +138,7 @@
             this.BreakTimer_Label.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.BreakTimer_Label.Font = new System.Drawing.Font("Perpetua", 22F);
             this.BreakTimer_Label.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.BreakTimer_Label.Location = new System.Drawing.Point(233, 100);
+            this.BreakTimer_Label.Location = new System.Drawing.Point(233, 107);
             this.BreakTimer_Label.Name = "BreakTimer_Label";
             this.BreakTimer_Label.Size = new System.Drawing.Size(119, 34);
             this.BreakTimer_Label.TabIndex = 8;
@@ -149,7 +151,7 @@
             this.label4.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.label4.Font = new System.Drawing.Font("Perpetua", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label4.Location = new System.Drawing.Point(154, 100);
+            this.label4.Location = new System.Drawing.Point(154, 107);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(69, 28);
             this.label4.TabIndex = 7;
@@ -160,12 +162,24 @@
             this.Main_Timer.Interval = 1000;
             this.Main_Timer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // ResetTimesheet_Button
+            // 
+            this.ResetTimesheet_Button.Location = new System.Drawing.Point(11, 121);
+            this.ResetTimesheet_Button.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.ResetTimesheet_Button.Name = "ResetTimesheet_Button";
+            this.ResetTimesheet_Button.Size = new System.Drawing.Size(121, 25);
+            this.ResetTimesheet_Button.TabIndex = 9;
+            this.ResetTimesheet_Button.Text = "Reset Timesheet";
+            this.ResetTimesheet_Button.UseVisualStyleBackColor = true;
+            this.ResetTimesheet_Button.Click += new System.EventHandler(this.ResetTimesheet_Button_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(364, 144);
+            this.ClientSize = new System.Drawing.Size(364, 151);
+            this.Controls.Add(this.ResetTimesheet_Button);
             this.Controls.Add(this.BreakTimer_Label);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.WorkTimer_Label);
@@ -183,6 +197,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Grinding Gear Games - Time Logger";
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -199,6 +214,7 @@
         private System.Windows.Forms.Label BreakTimer_Label;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Timer Main_Timer;
+        private System.Windows.Forms.Button ResetTimesheet_Button;
     }
 }
 

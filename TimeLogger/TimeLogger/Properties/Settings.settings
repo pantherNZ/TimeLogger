@@ -26,5 +26,19 @@
     <Setting Name="OutputExcelFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">Timesheet.xlsx</Value>
     </Setting>
+    <Setting Name="Name" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EmailRecipent" Type="System.String" Scope="User">
+      <Value Profile="(Default)">gggpayroll@gmail.com</Value>
+    </Setting>
+    <Setting Name="EmailBody" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Hello, Here is my time sheet for: *DATE*
+
+Thank you!
+
+--
+*NAME*</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

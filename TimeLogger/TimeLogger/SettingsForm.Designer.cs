@@ -42,6 +42,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.OutputFile_Textbox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.EmailSettings_Button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Accept_Button
@@ -51,7 +54,7 @@
             this.Accept_Button.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.Accept_Button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.Accept_Button.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Accept_Button.Location = new System.Drawing.Point(266, 127);
+            this.Accept_Button.Location = new System.Drawing.Point(185, 153);
             this.Accept_Button.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.Accept_Button.Name = "Accept_Button";
             this.Accept_Button.Size = new System.Drawing.Size(71, 25);
@@ -67,13 +70,14 @@
             this.Cancel_Button.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.Cancel_Button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.Cancel_Button.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Cancel_Button.Location = new System.Drawing.Point(191, 127);
+            this.Cancel_Button.Location = new System.Drawing.Point(269, 153);
             this.Cancel_Button.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.Cancel_Button.Name = "Cancel_Button";
             this.Cancel_Button.Size = new System.Drawing.Size(71, 25);
             this.Cancel_Button.TabIndex = 3;
             this.Cancel_Button.Text = "Cancel";
             this.Cancel_Button.UseVisualStyleBackColor = true;
+            this.Cancel_Button.Click += new System.EventHandler(this.Cancel_Button_Click);
             // 
             // RunOnStartup_Checkbox
             // 
@@ -158,6 +162,7 @@
             this.SelectDirectory_Button.TabIndex = 12;
             this.SelectDirectory_Button.Text = "...";
             this.SelectDirectory_Button.UseVisualStyleBackColor = true;
+            this.SelectDirectory_Button.Click += new System.EventHandler(this.SelectDirectory_Button_Click);
             // 
             // label2
             // 
@@ -184,13 +189,48 @@
             this.label3.TabIndex = 16;
             this.label3.Text = "Output excel file";
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(10, 126);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(246, 20);
+            this.textBox1.TabIndex = 17;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(259, 129);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "Name";
+            // 
+            // EmailSettings_Button
+            // 
+            this.EmailSettings_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.EmailSettings_Button.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.EmailSettings_Button.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.EmailSettings_Button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.EmailSettings_Button.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.EmailSettings_Button.Location = new System.Drawing.Point(10, 153);
+            this.EmailSettings_Button.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.EmailSettings_Button.Name = "EmailSettings_Button";
+            this.EmailSettings_Button.Size = new System.Drawing.Size(83, 25);
+            this.EmailSettings_Button.TabIndex = 19;
+            this.EmailSettings_Button.Text = "Email Settings";
+            this.EmailSettings_Button.UseVisualStyleBackColor = true;
+            this.EmailSettings_Button.Click += new System.EventHandler(this.EmailSettings_Button_Click);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(344, 160);
+            this.ClientSize = new System.Drawing.Size(348, 188);
             this.ControlBox = false;
+            this.Controls.Add(this.EmailSettings_Button);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.OutputFile_Textbox);
             this.Controls.Add(this.label2);
@@ -234,5 +274,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox OutputFile_Textbox;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button EmailSettings_Button;
     }
 }
