@@ -336,14 +336,13 @@ namespace TimeLogger
         // Show settings button
         private void Settings_Button_Click( object sender, EventArgs e )
         {
+            this.TopMost = false;
             var settingsForm = new SettingsForm();
+            settingsForm.ShowDialog();
 
-            if( settingsForm.ShowDialog() == DialogResult.OK )
-            {
-                // Apply settings
-                this.TopMost = Properties.Settings.Default.AlwaysOnTop;
-                m_miniForm.TopMost = Properties.Settings.Default.AlwaysOnTop;
-            }
+            // Apply settings
+            this.TopMost = Properties.Settings.Default.AlwaysOnTop;
+            m_miniForm.TopMost = Properties.Settings.Default.AlwaysOnTop;
         }
 
         // Timer
@@ -449,14 +448,13 @@ namespace TimeLogger
             {
                 MessageBox.Show( "You haven't set a name in the settings, please enter one", "Invalid name", MessageBoxButtons.OK );
 
+                this.TopMost = false;
                 var settingsForm = new SettingsForm();
+                settingsForm.ShowDialog();
 
-                if( settingsForm.ShowDialog() == DialogResult.OK )
-                {
-                    // Apply settings
-                    this.TopMost = Properties.Settings.Default.AlwaysOnTop;
-                    m_miniForm.TopMost = Properties.Settings.Default.AlwaysOnTop;
-                }
+                // Apply settings
+                this.TopMost = Properties.Settings.Default.AlwaysOnTop;
+                m_miniForm.TopMost = Properties.Settings.Default.AlwaysOnTop;
 
                 return;
             }
