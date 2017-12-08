@@ -194,7 +194,6 @@
             this.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Grinding Gear Games - Time Logger";
             this.Shown += new System.EventHandler(this.MainForm_Shown);
