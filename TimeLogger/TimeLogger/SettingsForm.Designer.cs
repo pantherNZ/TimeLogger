@@ -45,6 +45,7 @@
             this.Name_TextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.EmailSettings_Button = new System.Windows.Forms.Button();
+            this.Required_Label = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Accept_Button
@@ -202,9 +203,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(259, 129);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.Size = new System.Drawing.Size(54, 13);
             this.label4.TabIndex = 18;
-            this.label4.Text = "Name";
+            this.label4.Text = "Full Name";
             // 
             // EmailSettings_Button
             // 
@@ -222,6 +223,18 @@
             this.EmailSettings_Button.UseVisualStyleBackColor = true;
             this.EmailSettings_Button.Click += new System.EventHandler(this.EmailSettings_Button_Click);
             // 
+            // Required_Label
+            // 
+            this.Required_Label.AutoSize = true;
+            this.Required_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.Required_Label.ForeColor = System.Drawing.Color.Red;
+            this.Required_Label.Location = new System.Drawing.Point(311, 127);
+            this.Required_Label.Name = "Required_Label";
+            this.Required_Label.Size = new System.Drawing.Size(13, 17);
+            this.Required_Label.TabIndex = 20;
+            this.Required_Label.Text = "*";
+            this.Required_Label.Visible = false;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -229,6 +242,7 @@
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(344, 184);
             this.ControlBox = false;
+            this.Controls.Add(this.Required_Label);
             this.Controls.Add(this.EmailSettings_Button);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Name_TextBox);
@@ -254,6 +268,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -278,5 +293,6 @@
         private System.Windows.Forms.TextBox Name_TextBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button EmailSettings_Button;
+        private System.Windows.Forms.Label Required_Label;
     }
 }

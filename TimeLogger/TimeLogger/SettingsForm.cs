@@ -32,7 +32,8 @@ namespace TimeLogger
         {
             if( Name_TextBox.Text.Length == 0 )
             {
-                Name_TextBox.BackColor = Color.Red;
+                Required_Label.Visible = true;
+                Name_TextBox.BackColor = Color.Pink;
                 DialogResult = DialogResult.None;
                 return;
             }
@@ -77,9 +78,15 @@ namespace TimeLogger
         {
             if( Properties.Settings.Default.Name.Length == 0 )
             {
-                Name_TextBox.BackColor = Color.Red;
+                Name_TextBox.BackColor = Color.Pink;
+                Required_Label.Visible = true;
                 DialogResult = DialogResult.None;
             }
+        }
+
+        private void SettingsForm_Load( object sender, EventArgs e )
+        {
+
         }
     }
 }

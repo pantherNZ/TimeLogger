@@ -189,6 +189,7 @@ namespace TimeLogger
                 m_currentState = State.ClockedIn;
                 m_breakEndTime = DateTime.Now;
                 ClockToggle_Button.Text = "Clock out";
+                m_miniForm.SetButtonText( ClockToggle_Button.Text );
             }
             else MessageBox.Show( "You cannot take a break without clocking in first!", "Take Break", MessageBoxButtons.OK );
         }
