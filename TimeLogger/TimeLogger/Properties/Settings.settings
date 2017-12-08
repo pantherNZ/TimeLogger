@@ -29,11 +29,11 @@
     <Setting Name="Name" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="EmailRecipent" Type="System.String" Scope="User">
+    <Setting Name="EmailRecipient" Type="System.String" Scope="User">
       <Value Profile="(Default)">gggpayroll@gmail.com</Value>
     </Setting>
     <Setting Name="EmailBody" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Hello, Here is my time sheet for: *DATE*
+      <Value Profile="(Default)">Hello, Here is my time sheet for: *DATES*
 
 Thank you!
 

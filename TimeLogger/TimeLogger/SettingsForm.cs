@@ -25,12 +25,29 @@ namespace TimeLogger
             OutputFile_Textbox.Text = Properties.Settings.Default.OutputExcelFile;
             OutputDirectory_Textbox.Text = Properties.Settings.Default.OutputDirectory;
             MaxPaidBreak.Text = Properties.Settings.Default.MaxPaidBreak.ToString();
+            Name_TextBox.Text = Properties.Settings.Default.Name;
         }
 
         private void Accept_Button_Click( object sender, EventArgs e )
         {
+            if( Name_TextBox.Text.Length == 0 )
+            {
+                Name_TextBox.BackColor = Color.Red;
+                DialogResult = DialogResult.None;
+                return;
+            }
+
             // Save settings
-            SaveSettings();
+            Properties.Settings.Default.SaveLocalCopy = SaveLocalCopy_Checkbox.Checked;
+            Properties.Settings.Default.AlwaysOnTop = AlwaysOnTop_Checkbox.Checked;
+            Properties.Settings.Default.RunOnStartup = RunOnStartup_Checkbox.Checked;
+            Properties.Settings.Default.OpenToMiniView = OpenToMiniView_Checkbox.Checked;
+            Properties.Settings.Default.ExportToTextFile = ExportToTextFile_Checkbox.Checked;
+            Properties.Settings.Default.OutputExcelFile = OutputFile_Textbox.Text;
+            Properties.Settings.Default.OutputDirectory = OutputDirectory_Textbox.Text;
+            Properties.Settings.Default.MaxPaidBreak = int.Parse( MaxPaidBreak.Text );
+            Properties.Settings.Default.Name = Name_TextBox.Text;
+            Properties.Settings.Default.Save();
         }
 
         private void SelectDirectory_Button_Click( object sender, EventArgs e )
@@ -51,27 +68,18 @@ namespace TimeLogger
 
         private void EmailSettings_Button_Click( object sender, EventArgs e )
         {
-            SaveSettings();
             var settingsForm = new EmailSettingsForm();
             settingsForm.ShowDialog();
+            this.DialogResult = DialogResult.None;
         }
 
         private void Cancel_Button_Click( object sender, EventArgs e )
         {
-
-        }
-
-        private void SaveSettings()
-        {
-            Properties.Settings.Default.SaveLocalCopy = SaveLocalCopy_Checkbox.Checked;
-            Properties.Settings.Default.AlwaysOnTop = AlwaysOnTop_Checkbox.Checked;
-            Properties.Settings.Default.RunOnStartup = RunOnStartup_Checkbox.Checked;
-            Properties.Settings.Default.OpenToMiniView = OpenToMiniView_Checkbox.Checked;
-            Properties.Settings.Default.ExportToTextFile = ExportToTextFile_Checkbox.Checked;
-            Properties.Settings.Default.OutputExcelFile = OutputFile_Textbox.Text;
-            Properties.Settings.Default.OutputDirectory = OutputDirectory_Textbox.Text;
-            Properties.Settings.Default.MaxPaidBreak = int.Parse( MaxPaidBreak.Text );
-            Properties.Settings.Default.Save();
+            if( Properties.Settings.Default.Name.Length == 0 )
+            {
+                Name_TextBox.BackColor = Color.Red;
+                DialogResult = DialogResult.None;
+            }
         }
     }
 }

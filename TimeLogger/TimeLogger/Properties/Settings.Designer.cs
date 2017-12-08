@@ -134,18 +134,18 @@ namespace TimeLogger.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("gggpayroll@gmail.com")]
-        public string EmailRecipent {
+        public string EmailRecipient {
             get {
-                return ((string)(this["EmailRecipent"]));
+                return ((string)(this["EmailRecipient"]));
             }
             set {
-                this["EmailRecipent"] = value;
+                this["EmailRecipient"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Hello, Here is my time sheet for: *DATE*\r\n\r\nThank you!\r\n\r\n--\r\n*NAME*")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Hello, Here is my time sheet for: *DATES*\r\n\r\nThank you!\r\n\r\n--\r\n*NAME*")]
         public string EmailBody {
             get {
                 return ((string)(this["EmailBody"]));

@@ -1,2 +1,0 @@
-auto ask to clock in / out on windows shutdown, windows start etc
-need to finish hooking up email body / recipient settings

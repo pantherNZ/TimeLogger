@@ -17,14 +17,13 @@ namespace TimeLogger
             InitializeComponent();
 
             Body_TextBox.Text = Properties.Settings.Default.EmailBody;
-            Recipent_Textbox.Text = Properties.Settings.Default.EmailRecipent;
+            Recipient_Textbox.Text = Properties.Settings.Default.EmailRecipient;
         }
 
         private void Accept_Button_Click( object sender, EventArgs e )
         {
             Properties.Settings.Default.EmailBody = Body_TextBox.Text;
-            Properties.Settings.Default.EmailRecipent = Recipent_Textbox.Text;
-            Properties.Settings.Default.Save();
+            Properties.Settings.Default.EmailRecipient = Recipient_Textbox.Text;
         }
     }
 }

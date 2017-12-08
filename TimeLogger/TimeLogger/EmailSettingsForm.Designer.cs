@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Recipent_Textbox = new System.Windows.Forms.TextBox();
+            this.Recipient_Textbox = new System.Windows.Forms.TextBox();
             this.Cancel_Button = new System.Windows.Forms.Button();
             this.Accept_Button = new System.Windows.Forms.Button();
             this.Body_TextBox = new System.Windows.Forms.TextBox();
@@ -36,12 +36,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // Recipent_Textbox
+            // Recipient_Textbox
             // 
-            this.Recipent_Textbox.Location = new System.Drawing.Point(9, 9);
-            this.Recipent_Textbox.Name = "Recipent_Textbox";
-            this.Recipent_Textbox.Size = new System.Drawing.Size(251, 20);
-            this.Recipent_Textbox.TabIndex = 19;
+            this.Recipient_Textbox.Location = new System.Drawing.Point(9, 9);
+            this.Recipient_Textbox.Name = "Recipient_Textbox";
+            this.Recipient_Textbox.Size = new System.Drawing.Size(251, 20);
+            this.Recipient_Textbox.TabIndex = 19;
             // 
             // Cancel_Button
             // 
@@ -88,9 +88,9 @@
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.label1.Location = new System.Drawing.Point(266, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 13);
+            this.label1.Size = new System.Drawing.Size(80, 13);
             this.label1.TabIndex = 21;
-            this.label1.Text = "Email Recipent";
+            this.label1.Text = "Email Recipient";
             // 
             // label2
             // 
@@ -107,12 +107,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(440, 212);
+            this.ClientSize = new System.Drawing.Size(436, 208);
             this.ControlBox = false;
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Body_TextBox);
-            this.Controls.Add(this.Recipent_Textbox);
+            this.Controls.Add(this.Recipient_Textbox);
             this.Controls.Add(this.Cancel_Button);
             this.Controls.Add(this.Accept_Button);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -129,7 +129,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox Recipent_Textbox;
+        private System.Windows.Forms.TextBox Recipient_Textbox;
         private System.Windows.Forms.Button Cancel_Button;
         private System.Windows.Forms.Button Accept_Button;
         private System.Windows.Forms.TextBox Body_TextBox;

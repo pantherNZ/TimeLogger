@@ -99,14 +99,61 @@ namespace TimeLogger
             Visible = !Visible;
         }
 
-        public void CreateEmail()
+        public void CreateEmail( DateTime time_period_start )
         {
+            // Copy the excel sheet and rename properly
+            var strCurrentFilePath = Properties.Settings.Default.OutputDirectory + Properties.Settings.Default.OutputExcelFile;
+            var file_type_dot_index = Properties.Settings.Default.OutputExcelFile.LastIndexOf( '.' );
+            var strOutputPathDirectory = Properties.Settings.Default.OutputDirectory;
+            var strOutputPathFileName = Properties.Settings.Default.Name + " - " +
+                Properties.Settings.Default.OutputExcelFile.Substring( 0, file_type_dot_index ) + "(" +
+                time_period_start.ToShortDateString().Replace( '/', '-' ) + " - " +
+                time_period_start.AddDays( 14 ).ToShortDateString().Replace( '/', '-' ) + ")" +
+                Properties.Settings.Default.OutputExcelFile.Substring( file_type_dot_index );
+            var strFullPath = strOutputPathDirectory + strOutputPathFileName;
+
+            // Write data to excel spreadsheet
+            XSSFWorkbook hssfwb;
+
+            using( FileStream file = new FileStream( strCurrentFilePath, FileMode.Open, FileAccess.Read ) )
+            {
+                hssfwb = new XSSFWorkbook( file );
+                file.Close();
+            }
+
+            using( FileStream file = new FileStream( strFullPath, FileMode.CreateNew, FileAccess.Write ) )
+            {
+                hssfwb.Write( file );
+                file.Close();
+            }
+
+            // Create mail
             Outlook.Application oApp = new Outlook.Application();
             Outlook._MailItem oMailItem = ( Outlook._MailItem )oApp.CreateItem( Outlook.OlItemType.olMailItem );
-            oMailItem.To = "alex.denford@xtra.co.nz";
-            oMailItem.Subject = "Timesheet";
-            oMailItem.Body = "Hello, Here is my time sheet for: \n\nThank you!\n\n--\nAlex Denford";
+            oMailItem.To = Properties.Settings.Default.EmailRecipient;
+            oMailItem.Subject = "Timesheet - " + Properties.Settings.Default.Name;
+            var output_body = Properties.Settings.Default.EmailBody.Replace( "*NAME*", Properties.Settings.Default.Name );
+            output_body = output_body.Replace( "*DATES*", time_period_start.ToShortDateString() + " - " + time_period_start.AddDays( 14 ).ToShortDateString() );
+            oMailItem.Attachments.Add( strFullPath, Outlook.OlAttachmentType.olByValue, 1, "Timesheet" );
+            oMailItem.Body = output_body;
             oMailItem.Display( true );
+
+            // Delete
+            File.Delete( strFullPath );
+
+            // Save / Store a copy in /saved folder
+            if( Properties.Settings.Default.SaveLocalCopy )
+            {
+                strOutputPathDirectory = Properties.Settings.Default.OutputDirectory + "Saved\\";
+                strFullPath = strOutputPathDirectory + strOutputPathFileName;
+                System.IO.Directory.CreateDirectory( strOutputPathDirectory );
+
+                using( FileStream file = new FileStream( strFullPath, FileMode.CreateNew, FileAccess.Write ) )
+                {
+                    hssfwb.Write( file );
+                    file.Close();
+                }
+            }
         }
 
         // Private methods
@@ -225,21 +272,21 @@ namespace TimeLogger
                     int iRow = 10 + iDayOfWeek + iWeekNumber * 8;
 
                     // Main Start & End Times
-                    sheet.GetRow( iRow ).GetCell( 2 ).SetCellValue( m_startTime.ToString( @"hh\:mm\:ss" ) );
-                    sheet.GetRow( iRow ).GetCell( 3 ).SetCellValue( m_endTime.ToString( @"hh\:mm\:ss" ) );
+                    sheet.GetRow( iRow ).GetCell( 2 ).SetCellValue( m_startTime.ToString( @"hh\:mm" ) );
+                    sheet.GetRow( iRow ).GetCell( 3 ).SetCellValue( m_endTime.ToString( @"hh\:mm" ) );
 
                     // Secondary Start & End Times
-                    //sheet.GetRow( iRow ).GetCell( 4 ).SetCellValue( EndTime.ToString( "hh:mm tt" ) ); 
-                    //sheet.GetRow( iRow ).GetCell( 5 ).SetCellValue( EndTime.ToString( "hh:mm tt" ) ); 
+                    //sheet.GetRow( iRow ).GetCell( 4 ).SetCellValue( EndTime.ToString( @"hh\:mm" ) ); 
+                    //sheet.GetRow( iRow ).GetCell( 5 ).SetCellValue( EndTime.ToString( @"hh\:mm" ) ); 
 
                     // Unpaid break
                     int iUnpaidBreak = ( int )Math.Max( 0.0, break_minutes - 30.0 );
                     sheet.GetRow( iRow ).GetCell( 7 ).SetCellValue( iUnpaidBreak );
 
-                    //File.Delete( strOutputPath );
+                    File.Delete( strOutputPath );
 
                     // Save
-                    using( FileStream file = new FileStream( strOutputPath, FileMode.Open, FileAccess.Read ) )
+                    using( FileStream file = new FileStream( strOutputPath, FileMode.CreateNew, FileAccess.Write ) )
                     {
                         hssfwb.Write( file );
                         file.Close();
@@ -248,7 +295,7 @@ namespace TimeLogger
                     // If Friday, email to GGGPayroll
                     if( iWeekNumber == 1 && iDayOfWeek == 4 )
                         if( MessageBox.Show( "Do you want to email your time sheet now?", "Confirm", MessageBoxButtons.YesNo ) == DialogResult.Yes )
-                            CreateEmail();
+                            CreateEmail( today.AddDays( -11 ) );
 
                     break;
                 }
@@ -397,6 +444,22 @@ namespace TimeLogger
 
         private void MainForm_Shown( object sender, EventArgs e )
         {
+            if( Properties.Settings.Default.Name.Length == 0 )
+            {
+                MessageBox.Show( "You haven't set a name in the settings, please enter one", "Invalid name", MessageBoxButtons.OK );
+
+                var settingsForm = new SettingsForm();
+
+                if( settingsForm.ShowDialog() == DialogResult.OK )
+                {
+                    // Apply settings
+                    this.TopMost = Properties.Settings.Default.AlwaysOnTop;
+                    m_miniForm.TopMost = Properties.Settings.Default.AlwaysOnTop;
+                }
+
+                return;
+            }
+
             // Open to mini form
             if( Properties.Settings.Default.OpenToMiniView )
             {
@@ -423,7 +486,7 @@ namespace TimeLogger
                 if( MessageBox.Show( "It isn't Friday, are you sure you want to email your time sheet now?", "Confirm", MessageBoxButtons.YesNo ) == DialogResult.No )
                     return;
 
-            CreateEmail();
+            CreateEmail( today.AddDays( - iDayOfWeek - ( iWeekNumber == 0 ? 0 : 7 ) ) );
         }
     }
 }

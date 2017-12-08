@@ -42,7 +42,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.OutputFile_Textbox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.Name_TextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.EmailSettings_Button = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -104,9 +104,9 @@
             this.SaveLocalCopy_Checkbox.AutoSize = true;
             this.SaveLocalCopy_Checkbox.Location = new System.Drawing.Point(10, 8);
             this.SaveLocalCopy_Checkbox.Name = "SaveLocalCopy_Checkbox";
-            this.SaveLocalCopy_Checkbox.Size = new System.Drawing.Size(102, 17);
+            this.SaveLocalCopy_Checkbox.Size = new System.Drawing.Size(117, 17);
             this.SaveLocalCopy_Checkbox.TabIndex = 6;
-            this.SaveLocalCopy_Checkbox.Text = "Save local copy";
+            this.SaveLocalCopy_Checkbox.Text = "Save copy of excel";
             this.SaveLocalCopy_Checkbox.UseVisualStyleBackColor = true;
             // 
             // AlwaysOnTop_Checkbox
@@ -189,12 +189,13 @@
             this.label3.TabIndex = 16;
             this.label3.Text = "Output excel file";
             // 
-            // textBox1
+            // Name_TextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(10, 126);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(246, 20);
-            this.textBox1.TabIndex = 17;
+            this.Name_TextBox.BackColor = System.Drawing.SystemColors.Window;
+            this.Name_TextBox.Location = new System.Drawing.Point(10, 126);
+            this.Name_TextBox.Name = "Name_TextBox";
+            this.Name_TextBox.Size = new System.Drawing.Size(246, 20);
+            this.Name_TextBox.TabIndex = 17;
             // 
             // label4
             // 
@@ -226,11 +227,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(348, 188);
+            this.ClientSize = new System.Drawing.Size(344, 184);
             this.ControlBox = false;
             this.Controls.Add(this.EmailSettings_Button);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.Name_TextBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.OutputFile_Textbox);
             this.Controls.Add(this.label2);
@@ -274,7 +275,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox OutputFile_Textbox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox Name_TextBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button EmailSettings_Button;
     }
