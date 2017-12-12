@@ -52,17 +52,7 @@ namespace TimeLogger
                 Properties.Settings.Default.OutputDirectory = Environment.GetFolderPath( Environment.SpecialFolder.Desktop ) + "\\";
 
             // Store registry key in order to run on Windows startup
-            RegistryKey rk = Registry.CurrentUser.OpenSubKey( "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true );
-            var key = "GGG Time Logger";
-
-            if( rk == null && Properties.Settings.Default.RunOnStartup )
-            {
-                rk.SetValue( key, Application.ExecutablePath.ToString() );
-            }
-            else if( rk != null && !Properties.Settings.Default.RunOnStartup )
-            {
-                rk.DeleteValue( key );
-            }
+            SetupRegistryKey();
 
             // Test the excel file
             if( !File.Exists( Properties.Settings.Default.OutputDirectory + Properties.Settings.Default.OutputExcelFile ) )
@@ -157,6 +147,23 @@ namespace TimeLogger
         }
 
         // Private methods
+        private void SetupRegistryKey()
+        {
+            RegistryKey rk = Registry.CurrentUser.OpenSubKey( "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true );
+            var value = "GGG Time Logger";
+            var key = rk.GetValue( value );
+            var path = Application.ExecutablePath.ToString();
+
+            if( ( key == null || key.ToString() != path ) && Properties.Settings.Default.RunOnStartup )
+            {
+                rk.SetValue( value, path );
+            }
+            else if( key != null && !Properties.Settings.Default.RunOnStartup )
+            {
+                rk.DeleteValue( value );
+            }
+        }
+
         private void FormClosingHandler( object sender, FormClosingEventArgs e )
         {
             Application.Exit();
@@ -343,6 +350,7 @@ namespace TimeLogger
             // Apply settings
             this.TopMost = Properties.Settings.Default.AlwaysOnTop;
             m_miniForm.TopMost = Properties.Settings.Default.AlwaysOnTop;
+            SetupRegistryKey();
         }
 
         // Timer
