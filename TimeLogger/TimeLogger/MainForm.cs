@@ -96,9 +96,9 @@ namespace TimeLogger
             var file_type_dot_index = Properties.Settings.Default.OutputExcelFile.LastIndexOf( '.' );
             var strOutputPathDirectory = Properties.Settings.Default.OutputDirectory;
             var strOutputPathFileName = Properties.Settings.Default.Name + " - " +
-                Properties.Settings.Default.OutputExcelFile.Substring( 0, file_type_dot_index ) + "(" +
-                time_period_start.ToShortDateString().Replace( '/', '-' ) + " - " +
-                time_period_start.AddDays( 14 ).ToShortDateString().Replace( '/', '-' ) + ")" +
+                Properties.Settings.Default.OutputExcelFile.Substring( 0, file_type_dot_index ) + " (" +
+                time_period_start.ToString( @"dd\-MM\-yy" ) + " - " +
+                time_period_start.AddDays( 14 ).ToString( @"dd\-MM\-yy" ) + ")" +
                 Properties.Settings.Default.OutputExcelFile.Substring( file_type_dot_index );
             var strFullPath = strOutputPathDirectory + strOutputPathFileName;
 
@@ -405,7 +405,7 @@ namespace TimeLogger
                     int iDayOfWeek = ( int )today.DayOfWeek - 1;
                     iDayOfWeek = ( iDayOfWeek == -1 ? 6 : iDayOfWeek );
 
-                    sheet.GetRow( 7 ).GetCell( 8 ).SetCellType( CellType.String );
+                    sheet.GetRow( 7 ).GetCell( 8 ).SetCellValue( today.AddDays( -iDayOfWeek - ( iWeekNumber == 0 ? 0 : 7 ) ).ToShortDateString() );
 
                     for( int iRow = 10; iRow <= 24; ++iRow )
                     {
