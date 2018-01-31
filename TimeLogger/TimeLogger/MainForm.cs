@@ -240,8 +240,8 @@ namespace TimeLogger
                 using( System.IO.StreamWriter file = new System.IO.StreamWriter( Properties.Settings.Default.OutputDirectory + @"\GGGTimeLogger.txt", true ) )
                 {
                     file.WriteLine( today.DayOfWeek.ToString() + " " + today.ToString( "MMMM dd" ) +
-                                    "\t\t\tStart Time: " + m_startTime.ToString( @"hh\:mm\:ss" ) +
-                                    "\t\t\tEnd Time: " + m_endTime.ToString( @"hh\:mm\:ss" ) +
+                                    "\t\t\tStart Time: " + m_startTime.ToString( @"HH\:mm\:ss" ) +
+                                    "\t\t\tEnd Time: " + m_endTime.ToString( @"HH\:mm\:ss" ) +
                                     "\t\t\tTotal Break: " + ( int )break_minutes + " minutes" +
                                     "\t\t\tTotal Work: " + work_hours.ToString( "0.00" ) + " hours" );
                 }
@@ -280,8 +280,8 @@ namespace TimeLogger
                     int iRow = 10 + iDayOfWeek + iWeekNumber * 8;
 
                     // Main Start & End Times
-                    sheet.GetRow( iRow ).GetCell( 2 ).SetCellValue( m_startTime.ToString( @"hh\:mm" ) );
-                    sheet.GetRow( iRow ).GetCell( 3 ).SetCellValue( m_endTime.ToString( @"hh\:mm" ) );
+                    sheet.GetRow( iRow ).GetCell( 2 ).SetCellValue( m_startTime.ToString( @"HH\:mm" ) );
+                    sheet.GetRow( iRow ).GetCell( 3 ).SetCellValue( m_endTime.ToString( @"HH\:mm" ) );
 
                     // Secondary Start & End Times
                     //sheet.GetRow( iRow ).GetCell( 4 ).SetCellValue( EndTime.ToString( @"hh\:mm" ) ); 
