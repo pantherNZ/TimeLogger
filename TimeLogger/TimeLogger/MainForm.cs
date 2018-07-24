@@ -128,9 +128,6 @@ namespace TimeLogger
             oMailItem.Body = output_body;
             oMailItem.Display( true );
 
-            // Delete
-            File.Delete( strFullPath );
-
             // Save / Store a copy in /saved folder
             if( Properties.Settings.Default.SaveLocalCopy )
             {
@@ -144,6 +141,9 @@ namespace TimeLogger
                     file.Close();
                 }
             }
+
+            // Delete
+            File.Delete(strFullPath);
         }
 
         // Private methods
