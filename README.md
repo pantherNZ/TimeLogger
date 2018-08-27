@@ -9,4 +9,5 @@ Time Logger program used for clocking work hours. Works on a timesheet XLS docum
 - Automatic fortnight query to send email
 
 Written in C# with .NET and NPOI package (used for excel formatting)
+
 Alex Denford - 2018
