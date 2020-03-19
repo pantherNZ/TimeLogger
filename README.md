@@ -11,3 +11,5 @@ Time Logger program used for clocking work hours. Works on a timesheet XLS docum
 Written in C# with .NET and NPOI package (used for excel formatting)
 
 Alex Denford - 2018
+
+![TimeLogger](https://static.wixstatic.com/media/188440_996109f690c946248faefa675d63ad94.png)  
