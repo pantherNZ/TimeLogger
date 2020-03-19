@@ -401,7 +401,7 @@ namespace TimeLogger
                     sheet.ForceFormulaRecalculation = true;
 
                     // Calculate if this week is the first or second week of our two week period
-                    int iWeekNumber = ( int )( ( today.DayOfYear % 14 ) / 7 );
+                    int iWeekNumber = ( int )( ( ( new DateTime( 2020, 9, 19 ) - today ).TotalDays % 14 ) / 7 );
                     int iDayOfWeek = ( int )today.DayOfWeek - 1;
                     iDayOfWeek = ( iDayOfWeek == -1 ? 6 : iDayOfWeek );
 
@@ -483,7 +483,7 @@ namespace TimeLogger
         {
             // Calculate if this week is the first or second week of our two week period
             DateTime today = DateTime.Today;
-            int iWeekNumber = ( int )( ( today.DayOfYear % 14 ) / 7 );
+            int iWeekNumber = ( int )( ( ( new DateTime( 2020, 9, 19 ) - today ).TotalDays % 14 ) / 7 );
 
             // Calculate current day
             int iDayOfWeek = ( int )today.DayOfWeek - 1;
@@ -493,7 +493,7 @@ namespace TimeLogger
                 if( MessageBox.Show( "It isn't Friday, are you sure you want to email your time sheet now?", "Confirm", MessageBoxButtons.YesNo ) == DialogResult.No )
                     return;
 
-            CreateEmail( today.AddDays( - iDayOfWeek - ( iWeekNumber == 0 ? 0 : 7 ) ) );
+            CreateEmail( today.AddDays( - iDayOfWeek - ( iWeekNumber == 0 ? 14 : 7 ) ) );
         }
     }
 }
