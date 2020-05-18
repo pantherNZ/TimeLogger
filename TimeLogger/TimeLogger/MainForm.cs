@@ -265,7 +265,7 @@ namespace TimeLogger
                     sheet.ForceFormulaRecalculation = true;
 
                     // Calculate if this week is the first or second week of our two week period
-                    int iWeekNumber = ( int )( ( today.DayOfYear % 14 ) / 7 );
+                    int iWeekNumber = GetWeekNumber();
 
                     // Calculate current day
                     int iDayOfWeek = ( int )today.DayOfWeek - 1;
@@ -400,12 +400,10 @@ namespace TimeLogger
                     ISheet sheet = hssfwb.GetSheetAt( 0 );
                     sheet.ForceFormulaRecalculation = true;
 
-                    // Calculate if this week is the first or second week of our two week period
-                    int iWeekNumber = ( int )( ( ( new DateTime( 2020, 9, 19 ) - today ).TotalDays % 14 ) / 7 );
                     int iDayOfWeek = ( int )today.DayOfWeek - 1;
                     iDayOfWeek = ( iDayOfWeek == -1 ? 6 : iDayOfWeek );
 
-                    sheet.GetRow( 7 ).GetCell( 8 ).SetCellValue( today.AddDays( -iDayOfWeek - ( iWeekNumber == 0 ? 0 : 7 ) ).ToShortDateString() );
+                    sheet.GetRow( 7 ).GetCell( 8 ).SetCellValue( today.AddDays( -iDayOfWeek - ( GetWeekNumber() == 0 ? 0 : 7 ) ).ToShortDateString() );
 
                     for( int iRow = 10; iRow <= 24; ++iRow )
                     {
@@ -483,7 +481,7 @@ namespace TimeLogger
         {
             // Calculate if this week is the first or second week of our two week period
             DateTime today = DateTime.Today;
-            int iWeekNumber = ( int )( ( ( new DateTime( 2020, 9, 19 ) - today ).TotalDays % 14 ) / 7 );
+            int iWeekNumber = GetWeekNumber();
 
             // Calculate current day
             int iDayOfWeek = ( int )today.DayOfWeek - 1;
@@ -494,6 +492,12 @@ namespace TimeLogger
                     return;
 
             CreateEmail( today.AddDays( - iDayOfWeek - ( iWeekNumber == 0 ? 14 : 7 ) ) );
+        }
+
+        // Calculate if this week is the first or second week of our two week period
+        private int GetWeekNumber()
+        {
+           return ( int )( ( ( DateTime.Today - new DateTime( 2020, 5, 18 ) ).TotalDays % 14 ) / 7 );
         }
     }
 }
